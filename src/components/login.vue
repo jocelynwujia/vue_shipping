@@ -86,6 +86,10 @@ export default {
         console.log(res)
         if(res.meta.status !==200) return this.$message.error('登录失败！')
         this.$message.success('登录成功！')
+        //登录成功之后，拿到token的值存储到客户端的sessionStorage，项目中其他有权限的API需要再登录成功之后才能访问
+        //因为token只在打开期间有效，所以存储在sessionStorage中
+        window.sessionStorage.setItem('token',res.data.token)
+        //通过编程式导航跳转到后台主页，路由地址是/home
         this.$router.push('/home')
       });
     },
