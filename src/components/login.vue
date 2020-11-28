@@ -14,14 +14,14 @@
         class="login_form"
       >
         <!-- 用户名 -->
-        <el-form-item prop = "username">
+        <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
-            prefix-icon="iconfont icon-user"         
+            prefix-icon="iconfont icon-user"
           ></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item prop = "password">
+        <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
             prefix-icon="iconfont icon-3702mima"
@@ -30,7 +30,7 @@
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary">登录</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
           <el-button type="info" @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
@@ -43,30 +43,53 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "zs",
+        username: "admin",
         password: "123456",
       },
       //登录表单的校验
       loginformRules: {
         username: [
           { required: true, message: "请输入登录名称", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
         ],
-        password:[
+        password: [
           { required: true, message: "请输入用户密码", trigger: "blur" },
-          { min: 6, max: 15, message: "长度在 6 到 15 个字符", trigger: "blur" },  
-        ]
+          {
+            min: 6,
+            max: 15,
+            message: "长度在 6 到 15 个字符",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
-  methods:{
-      //点击重置按钮，重置表单数据
-      resetLoginForm (){
-        //   console.log(this)
-        // $refs.loginFormRef拿到表单的实例对象，运用表单的resetFields()方法进行校验
-        this.$refs.loginFormRef.resetFields()
-      }
-  }
+  methods: {
+    //点击重置按钮，重置表单数据
+    resetLoginForm() {
+      //   console.log(this)
+      // $refs.loginFormRef拿到表单的实例对象，运用表单的resetFields()方法进行校验
+      this.$refs.loginFormRef.resetFields();
+    },
+    login() {
+      //validdate()参数是回调函数，返回值为布尔值，如果不传值，返回的就是promise
+      this.$refs.loginFormRef.validate( async valid =>{
+        //   console.log(valid)
+        if(!valid) return
+        //如果用户输入合法，调用axios请求数据
+        const {data:res} = await this.$http. post('login',this.loginForm)
+        console.log(res)
+        if(res.meta.status !==200) return this.$message.error('登录失败！')
+        this.$message.success('登录成功！')
+        this.$router.push('/home')
+      });
+    },
+  },
 };
 </script>
 
