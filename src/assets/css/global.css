@@ -1,0 +1,10 @@
+/* 全局样式表 */
+html,
+body,
+#app{
+    height: 100%;
+    line-height: 100%;
+    background-color: #2b4b6b;
+    margin: 0;
+    padding: 0;
+}
