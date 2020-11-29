@@ -7,7 +7,7 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 //导入axios
 import axios from 'axios'
-// import { config } from 'vue/types/umd'
+
 
 
 // 配置请求axios的根路径
