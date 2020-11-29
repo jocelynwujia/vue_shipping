@@ -23,7 +23,8 @@ import {
     TableColumn,
     Switch,
     Tooltip,
-    Pagination
+    Pagination,
+    Dialog
 } from 'element-ui'
 
 Vue.use(Button)
@@ -48,6 +49,7 @@ Vue.use(TableColumn)
 Vue.use(Switch)
 Vue.use(Tooltip)
 Vue.use(Pagination)
+Vue.use(Dialog)
 
 //把弹框注册为全局组件
 Vue.prototype.$message = Message
