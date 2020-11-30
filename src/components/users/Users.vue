@@ -14,12 +14,23 @@
         <!-- 搜索 与 添加-->
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
-                <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
+            <el-input
+              placeholder="请输入内容"
+              v-model="queryInfo.query"
+              clearable
+              @clear="getUserList"
+            >
+              <el-button
+                slot="append"
+                icon="el-icon-search"
+                @click="getUserList"
+              ></el-button>
             </el-input>
           </el-col>
           <el-col :span="4">
-            <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+            <el-button type="primary" @click="addDialogVisible = true"
+              >添加用户</el-button
+            >
           </el-col>
         </el-row>
 
@@ -54,6 +65,7 @@
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
+                @click="removeUserById(scope.row.id)"
               ></el-button>
               <el-tooltip
                 class="item"
@@ -85,26 +97,34 @@
         <!-- 添加用户对话框 -->
         <el-dialog
           title="添加用户"
-          :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+          :visible.sync="addDialogVisible"
+          width="50%"
+          @close="addDialogClosed"
+        >
           <!-- 对话框主体内容区 -->
-          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
-              <el-form-item label="用户名" prop="username">
-                  <el-input v-model="addForm.username"></el-input>
-              </el-form-item>
-              <el-form-item label="密码" prop="password">
-                  <el-input v-model="addForm.password"></el-input>
-              </el-form-item>
-              <el-form-item label="邮箱" prop="email">
-                  <el-input v-model="addForm.email"></el-input>
-              </el-form-item>
-              <el-form-item label="手机" prop="mobile">
-                  <el-input v-model="addForm.mobile"></el-input>
-              </el-form-item>
-          </el-form>    
+          <el-form
+            :model="addForm"
+            :rules="addFormRules"
+            ref="addFormRef"
+            label-width="70px"
+          >
+            <el-form-item label="用户名" prop="username">
+              <el-input v-model="addForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input v-model="addForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="addForm.email"></el-input>
+            </el-form-item>
+            <el-form-item label="手机" prop="mobile">
+              <el-input v-model="addForm.mobile"></el-input>
+            </el-form-item>
+          </el-form>
           <!-- 对话框底部区 -->
           <span slot="footer" class="dialog-footer">
-              <el-button @click="addDialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addUser">确 定</el-button>
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addUser">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -112,9 +132,16 @@
         <el-dialog
           title="修改用户"
           :visible.sync="editDialogVisible"
-          width="50%" @close="editDialogClosed">
+          width="50%"
+          @close="editDialogClosed"
+        >
           <!-- 修改用户对话框主体部分 -->
-          <el-form :model="editForm" :rules="editFormRules"  ref="editFormRef" label-width="70px">
+          <el-form
+            :model="editForm"
+            :rules="editFormRules"
+            ref="editFormRef"
+            label-width="70px"
+          >
             <el-form-item label="用户名">
               <el-input v-model="editForm.username" disabled></el-input>
             </el-form-item>
@@ -131,7 +158,6 @@
             <el-button type="primary" @click="editUserInfo">确 定</el-button>
           </span>
         </el-dialog>
-
       </div>
     </el-card>
   </div>
@@ -308,6 +334,30 @@ export default {
         // 3.提示更新成功
         this.$message.success('更新用户信息成功！')
       })
+    },
+    // 删除用户信息
+    async removeUserById(id){
+      const confirmResults = await this.$confirm('永久删除用户信息, 是否继续?', '删除用户信息', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err=>err)
+      // 1.打印的是promise对象，故用await async
+      // 2.点击确认按钮，返回的是字符串 confirm
+      // 3.点击确认按钮，返回的是字符串 cancel
+      // console.log(confirmResults) 
+        if(confirmResults !== 'confirm') {
+          return this.$message.info('已取消删除')
+        }
+        // console.log('删除成功！')
+        const {data:res} = await this.$http.delete('users/'+id)
+        // console.log(res)
+        if(res.meta.status !== 200) {
+          return this.$message.error('删除用户失败！')
+        }
+        this.$message.success('删除用户成功!')
+        //删除成功后，刷新用户列表
+        this.getUserList()
     }
   },
 };

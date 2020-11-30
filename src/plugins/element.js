@@ -24,7 +24,8 @@ import {
     Switch,
     Tooltip,
     Pagination,
-    Dialog
+    Dialog,
+    MessageBox 
 } from 'element-ui'
 
 Vue.use(Button)
@@ -53,3 +54,6 @@ Vue.use(Dialog)
 
 //把弹框注册为全局组件
 Vue.prototype.$message = Message
+// 把弹框询问注册为全局组件
+Vue.prototype.$confirm = MessageBox.confirm
+
