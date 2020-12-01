@@ -27,7 +27,9 @@ import {
     Dialog,
     MessageBox,
     Tag,
-    Tree
+    Tree,
+    Select,
+    Option
 } from 'element-ui'
 
 Vue.use(Button)
@@ -55,6 +57,8 @@ Vue.use(Pagination)
 Vue.use(Dialog)
 Vue.use(Tag)
 Vue.use(Tree)
+Vue.use(Select)
+Vue.use(Option)
 
 //把弹框注册为全局组件
 Vue.prototype.$message = Message
