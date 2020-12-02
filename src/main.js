@@ -7,7 +7,7 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 //导入axios
 import axios from 'axios'
-
+import TableTree from 'vue-table-with-tree-grid'
 
 
 // 配置请求axios的根路径
@@ -20,6 +20,8 @@ axios.interceptors.request.use(config=>{
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
+// 注册全局可用的组件
+Vue.component('tree-table',TableTree)
 
 new Vue({
   router,
