@@ -104,17 +104,16 @@ export default {
   methods: {
     // 获取商品的列表数据
     async getCateList() {
-      const { data: res } = await this.$http.get("categories", {
-        params: this.queryInfos,
-      });
+      const { data: res } = await this.$http.get("categories", {params: this.queryInfo});
       if (res.meta.status !== 200) {
         return this.$message.error("商品列表数据获取失败！");
       }
 
-    //   console.log(res.data)
-      //把数据给到数据列表
-      this.CateList = res.data;
+      // console.log(res.data)
+      // 把数据给到数据列表
+      this.CateList = res.data.result;
       // 为总数据条数赋值
+      // console.log(this.CateList);
       this.total = res.data.length;
       // console.log(this.total)
     },
