@@ -31,6 +31,7 @@
       </el-row>
       <!-- Tabs 标签页 -->
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
+        <!-- 动态参数页面 -->
         <el-tab-pane label="动态参数" name="many">
           <!-- 动态参数添加按钮 -->
           <el-button type="primary" size="mini" :disabled="isBtnDisabled" @click="addDialogVisible = true"
@@ -44,12 +45,12 @@
               <el-table-column label="操作">
                   <template slot-scope="scope">
                       <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.attr_id)">编辑</el-button>
-                      <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                      <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeParams(scope.row.attr_id)">删除</el-button>
                   </template>
               </el-table-column>
           </el-table>
         </el-tab-pane>
-        <!-- 静态参数页面 -->
+        <!-- 静态属性页面 -->
         <el-tab-pane label="静态属性" name="only">
           <!-- 静态参数添加按钮 -->
           <el-button type="primary" size="mini" :disabled="isBtnDisabled" @click="addDialogVisible=true"
@@ -63,7 +64,7 @@
               <el-table-column label="操作">
                   <template slot-scope="scope">
                       <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.attr_id)">编辑</el-button>
-                      <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                      <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeParams(scope.row.attr_id)">删除</el-button>
                   </template>
               </el-table-column>
           </el-table>
@@ -71,7 +72,7 @@
       </el-tabs>
     </el-card>
 
-    <!-- 动态添加参数/静态添加属性对话框 -->
+    <!-- 添加参数对话框 -->
     <el-dialog
     :title="'添加'+ titleText"
     :visible.sync="addDialogVisible"
@@ -261,6 +262,25 @@ export default {
                 this.getParamsData()
                 this.editDialogVisible = false            
         })
+    },
+    // 删除参数
+    // 根基id删除对应的参数项
+    async removeParams(attr_id){
+      const confirmResult = await this.$confirm('此操作将永久删除该参数, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err=>err)
+        if(confirmResult !== 'confirm') {
+          return this.$message.info('取消删除')
+        }
+        // 删除业务逻辑
+        const {data :res} = await this.$http.delete(`categories/${this.cateId}/attributes/${attr_id}`)
+        if(res.meta.status !==200){
+          return this.$message.error('删除失败！')
+        }
+          this.$message.success('删除成功！')
+          this.getParamsData()
     }
   },
   // 控制添加按钮被使用的状态
