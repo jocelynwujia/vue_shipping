@@ -39,7 +39,29 @@
           >
           <!-- 动态参数的表格 -->
           <el-table :data = "manyTableData">
-              <el-table-column type="expand"></el-table-column>
+              <el-table-column type="expand">
+                <template slot-scope="scope">
+                  <el-tag
+                    v-for="(item,i) in scope.row.attr_vals"
+                    :key="i"
+                    closable>
+                    {{item}}
+                  </el-tag>
+                  <!-- 输入文本框 -->
+                  <el-input
+                  class="input-new-tag"
+                  v-if="scope.row.inputVisible"
+                  v-model="scope.row.inputValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)"
+                  @blur="handleInputConfirm(scope.row)"
+                >
+                </el-input>
+                <!-- 添加按钮 -->
+                <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
+                </template>
+              </el-table-column>
               <el-table-column type="index" label="#"></el-table-column>
               <el-table-column label="参数名称" prop="attr_name"></el-table-column>
               <el-table-column label="操作">
@@ -151,7 +173,11 @@ export default {
     //   修改参数表单的校验规则
       editFormRules:{
            attr_name:[{required:true,message:'请输入参数名称',trigger:'blur'}]
-      }
+      },
+      // 控制按钮与文本框的切换显示
+      inputVisible:false,
+      // 文本框输入的内容
+      inputValue:''
     };
   },
   created() {
@@ -186,7 +212,7 @@ export default {
          this.getParamsData()
     },
     //获取参数的列表数据
-  async getParamsData(){
+    async getParamsData(){
         //   根据所选分类的id 和 当前所处的面板 获取对应的参数
       const { data: res } = await this.$http.get(
         `categories/${this.cateId}/attributes`,
@@ -198,7 +224,16 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error("分类参数获取失败！");
       }
-        //  console.log(res.data);
+         
+        // 将attr_vals里面的数据转换成数组形式 
+        res.data.forEach(item =>{
+          item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+          //控制文本的显示与隐藏
+          item.inputVisible = false
+          //文本框中输入的值
+          item.inputValue = ''
+        })
+        // console.log(res.data);
         // 将获取的数据挂载到不同状态里
         if(this.activeName === 'only'){
             return this.onlyTableData = res.data
@@ -281,6 +316,39 @@ export default {
         }
           this.$message.success('删除成功！')
           this.getParamsData()
+    },
+    // 文本框失去焦点或者按下enter键都会触发
+    async handleInputConfirm(row){
+      
+      if(row.inputValue.trim().length === 0) {
+        row.inputValue = ''
+        row.inputVisible = false
+        return
+      }
+      // 如果没有return，则证明输入的内容需要做后续处理
+      //现将输入框的内容进行前端渲染
+      row.attr_vals.push(row.inputValue.trim())
+      row.inputValue = ''
+      row.inputVisible = false
+      // 发起请求将数据给到后台
+      const {data :res} = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`,{
+        attr_name:row.attr_name,
+        attr_sel:row.attr_sel,
+        attr_vals:row.attr_vals.join(' ')
+      })
+      if(res.meta.status !== 200 ){
+        return this.$message.error('修改参数项失败！')
+      }
+        this.$message.success('修改参数项成功！')       
+    },
+    // 点击按钮，展示文本输入框
+    showInput(row){
+      row.inputVisible = true
+      // 让文本框自动获得焦点
+      // $nextTick 作用就是当页面的上的元素被重新渲染之后，才会执行回调函数中的代码
+       this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        })
     }
   },
   // 控制添加按钮被使用的状态
@@ -316,5 +384,11 @@ export default {
 <style lang="less" scoped>
 .cate_opt {
   margin: 15px 0;
+}
+.el-tag {
+  margin: 15px;
+}
+.input-new-tag {
+  width: 150px;
 }
 </style>
