@@ -117,6 +117,7 @@
                   v-for="(item, i) in scope.row.attr_vals"
                   :key="i"
                   closable
+                  @close="handleClosed(i, scope.row)"
                 >
                   {{ item }}
                 </el-tag>
