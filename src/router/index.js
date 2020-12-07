@@ -7,14 +7,11 @@ import Users from '../components/users/Users.vue'
 import Rights from '../components/Power/Rights.vue'
 import Roles from '../components/Power/Roles.vue'
 import Cate from '../components/goods/cate.vue'
-<<<<<<< HEAD
 import Params from '../components/goods/Params.vue'
 import list from '../components/goods/list.vue'
 import Add from '../components/goods/Add.vue'
 import Order from '../components/orders/Order.vue'
 import report from '../components/report/report.vue'
-=======
->>>>>>> 20.商品分类
 
 Vue.use(VueRouter)
 
@@ -31,16 +28,12 @@ const routes = [
       { path: '/users', component: Users },
       { path: '/rights', component: Rights },
       { path: '/roles', component: Roles },
-<<<<<<< HEAD
       { path: '/categories', component: Cate },
       { path: '/params', component: Params },
       { path: '/goods', component: list },
       { path: '/goods/add', component: Add },
       { path: '/orders', component: Order },
       { path: '/reports', component: report }
-=======
-      { path: '/categories', component: Cate }
->>>>>>> 20.商品分类
     ]
   },
 ]

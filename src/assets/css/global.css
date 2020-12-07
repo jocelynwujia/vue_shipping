@@ -24,7 +24,6 @@ body,
     margin-top: 15px;
 }
 .el-cascader-menu{
-<<<<<<< HEAD
     height: 300px;
 }
 .el-steps {
@@ -35,7 +34,4 @@ body,
 }
 .ql-editor {
     height: 300px!important;
-=======
-    height: 350px;
->>>>>>> 20.商品分类
 }

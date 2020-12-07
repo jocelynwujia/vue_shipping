@@ -30,7 +30,6 @@ import {
     Tree,
     Select,
     Option,
-<<<<<<< HEAD
     Alert,
     Cascader,
     Tabs,
@@ -43,9 +42,6 @@ import {
     Timeline,
     TimelineItem
 
-=======
-    Cascader
->>>>>>> 20.商品分类
 } from 'element-ui'
 
 Vue.use(Button)
@@ -75,7 +71,6 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
-<<<<<<< HEAD
 Vue.use(Alert)
 Vue.use(Cascader)
 Vue.use(Tabs)
@@ -88,9 +83,6 @@ Vue.use(Upload)
 Vue.use(Timeline)
 Vue.use(TimelineItem)
 
-=======
-Vue.use(Cascader)
->>>>>>> 20.商品分类
 
 //把弹框注册为全局组件
 Vue.prototype.$message = Message
