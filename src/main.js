@@ -7,6 +7,7 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 //导入axios
 import axios from 'axios'
+<<<<<<< HEAD
 import TableTree from 'vue-table-with-tree-grid'
 // 导入富文本
 import VueQuillEditor from 'vue-quill-editor'
@@ -14,6 +15,10 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
+=======
+// 导入树形表格组件
+import TreeTable from 'vue-table-with-tree-grid'
+>>>>>>> 20.商品分类
 
 
 // 配置请求axios的根路径
@@ -26,6 +31,7 @@ axios.interceptors.request.use(config => {
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
+<<<<<<< HEAD
 // 注册全局可用的组件
 Vue.component('tree-table', TableTree)
 // 自定义格式化时间的全局过滤器
@@ -41,6 +47,10 @@ Vue.filter('dateformat', function (originVal) {
 
   return `${y}-${m}-${d} ${hh}:${ff}:${mm}`
 })
+=======
+// 注册为全局组件
+Vue.component('tree-table', TreeTable)
+>>>>>>> 20.商品分类
 
 // 将富文本注册为全局组件
 Vue.use(VueQuillEditor, /* { default global options } */)
